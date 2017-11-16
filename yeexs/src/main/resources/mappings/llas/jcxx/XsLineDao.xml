@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yee.yide.llas.jcxx.dao.XsLineDao">
+    
+	<sql id="xsLineColumns">
+		a.id AS "id",
+		a.line_code AS "lineCode",
+		a.line_name AS "lineName",
+		a.trsubstation_id AS "trsubstationId",
+		l1.name AS "trsubstationName",
+		a.isparline AS "isparline",
+		a.voltage AS "voltage",
+		a.isspecline AS "isspecline",
+		a.fp_svalue AS "fpSvalue",
+		a.fp_evalue AS "fpEvalue",
+		a.fp_subjoinqua AS "fpSubjoinqua",
+		a.fp_chmeter AS "fpChmeter",
+		a.fp_excerpqua AS "fpExcerpqua",
+		a.fup_svalue AS "fupSvalue",
+		a.fup_evalue AS "fupEvalue",
+		a.fup_subjoinqua AS "fupSubjoinqua",
+		a.fup_chmeter AS "fupChmeter",
+		a.fup_excerpqua AS "fupExcerpqua",
+		a.fp_totalqua AS "fpTotalqua",
+		a.fup_totalqua AS "fupTotalqua",
+		a.rp_svalue AS "rpSvalue",
+		a.rp_evalue AS "rpEvalue",
+		a.rp_subjoinqua AS "rpSubjoinqua",
+		a.rp_chmeter AS "rpChmeter",
+		a.rp_excerpqua AS "rpExcerpqua",
+		a.rp_totalqua AS "rpTotalqua",
+		a.rup_svalue AS "rupSvalue",
+		a.rup_evalue AS "rupEvalue",
+		a.rup_subjoinqua AS "rupSubjoinqua",
+		a.rup_chmeter AS "rupChmeter",
+		a.rup_excerpqua AS "rupExcerpqua",
+		a.rup_totalqua AS "rupTotalqua",
+		a.p_totalqua AS "pTotalqua",
+		a.up_totalqua AS "upTotalqua",
+		a.resistance AS "resistance",
+		a.unload_waste AS "unloadWaste",
+		a.cir_waste AS "cirWaste",
+		a.temperature AS "temperature",
+		a.k1 AS "k1",
+		a.k AS "k",
+		a.hours AS "hours",
+		a.intefactor AS "intefactor",
+		a.maxcapacity AS "maxcapacity",
+		a.capacity AS "capacity",
+		a.powerfactor AS "powerfactor",
+		a.sche_wrate AS "scheWrate",
+		a.changesign AS "changesign",
+		a.prflag AS "prflag",
+		a.qmdate AS "qmdate",
+		a.zmdate AS "zmdate",
+		a.rptvissign AS "rptvissign",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="xsLineJoins">
+		LEFT JOIN xs_trsubstation l1 ON l1.id = a.trsubstation_id
+	</sql>
+    
+	<select id="get" resultType="XsLine">
+		SELECT 
+			<include refid="xsLineColumns"/>
+		FROM xs_line a
+		<include refid="xsLineJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="XsLine">
+		SELECT 
+			<include refid="xsLineColumns"/>
+		FROM xs_line a
+		<include refid="xsLineJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="lineCode != null and lineCode != ''">
+				AND a.line_code = #{lineCode}
+			</if>
+			<if test="lineName != null and lineName != ''">
+				AND a.line_name = #{lineName}
+			</if>
+			<if test="trsubstationId != null and trsubstationId != ''">
+				AND a.trsubstation_id = #{trsubstationId}
+			</if>
+			<if test="isparline != null and isparline != ''">
+				AND a.isparline = #{isparline}
+			</if>
+			<if test="voltage != null and voltage != ''">
+				AND a.voltage = #{voltage}
+			</if>
+			<if test="isspecline != null and isspecline != ''">
+				AND a.isspecline = #{isspecline}
+			</if>
+			<if test="changesign != null and changesign != ''">
+				AND a.changesign = #{changesign}
+			</if>
+			<if test="prflag != null and prflag != ''">
+				AND a.prflag = #{prflag}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findListLineByDydj" resultType="XsLine">
+		SELECT
+		<include refid="xsLineColumns"/>
+		FROM xs_line a
+		<include refid="xsLineJoins"/>
+		<where>
+			a.del_flag = "0"
+			AND a.voltage = #{voltage}
+		</where>
+	</select>
+
+	<select id="findALLListLineByDydj" resultType="XsLine">
+		SELECT
+		<include refid="xsLineColumns"/>
+		FROM xs_line a
+		<include refid="xsLineJoins"/>
+		<where>
+			a.del_flag = "0"
+		</where>
+	</select>
+
+
+	<select id="findALLListMuxian" resultType="XsLine">
+		SELECT
+		<include refid="xsLineColumns"/>
+		FROM xs_line a
+		<include refid="xsLineJoins"/>
+		<where>
+			a.del_flag = "0" AND a.isparline = "1"
+		</where>
+	</select>
+
+	<select id="findAllList" resultType="XsLine">
+		SELECT 
+			<include refid="xsLineColumns"/>
+		FROM xs_line a
+		<include refid="xsLineJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO xs_line(
+			id,
+			line_code,
+			line_name,
+			trsubstation_id,
+			isparline,
+			voltage,
+			isspecline,
+			fp_svalue,
+			fp_evalue,
+			fp_subjoinqua,
+			fp_chmeter,
+			fp_excerpqua,
+			fup_svalue,
+			fup_evalue,
+			fup_subjoinqua,
+			fup_chmeter,
+			fup_excerpqua,
+			fp_totalqua,
+			fup_totalqua,
+			rp_svalue,
+			rp_evalue,
+			rp_subjoinqua,
+			rp_chmeter,
+			rp_excerpqua,
+			rp_totalqua,
+			rup_svalue,
+			rup_evalue,
+			rup_subjoinqua,
+			rup_chmeter,
+			rup_excerpqua,
+			rup_totalqua,
+			p_totalqua,
+			up_totalqua,
+			resistance,
+			unload_waste,
+			cir_waste,
+			temperature,
+			k1,
+			k,
+			hours,
+			intefactor,
+			maxcapacity,
+			capacity,
+			powerfactor,
+			sche_wrate,
+			changesign,
+			prflag,
+			qmdate,
+			zmdate,
+			rptvissign,
+			del_flag
+		) VALUES (
+			#{id},
+			#{lineCode},
+			#{lineName},
+			#{trsubstationId},
+			#{isparline},
+			#{voltage},
+			#{isspecline},
+			#{fpSvalue},
+			#{fpEvalue},
+			#{fpSubjoinqua},
+			#{fpChmeter},
+			#{fpExcerpqua},
+			#{fupSvalue},
+			#{fupEvalue},
+			#{fupSubjoinqua},
+			#{fupChmeter},
+			#{fupExcerpqua},
+			#{fpTotalqua},
+			#{fupTotalqua},
+			#{rpSvalue},
+			#{rpEvalue},
+			#{rpSubjoinqua},
+			#{rpChmeter},
+			#{rpExcerpqua},
+			#{rpTotalqua},
+			#{rupSvalue},
+			#{rupEvalue},
+			#{rupSubjoinqua},
+			#{rupChmeter},
+			#{rupExcerpqua},
+			#{rupTotalqua},
+			#{pTotalqua},
+			#{upTotalqua},
+			#{resistance},
+			#{unloadWaste},
+			#{cirWaste},
+			#{temperature},
+			#{k1},
+			#{k},
+			#{hours},
+			#{intefactor},
+			#{maxcapacity},
+			#{capacity},
+			#{powerfactor},
+			#{scheWrate},
+			#{changesign},
+			#{prflag},
+			#{qmdate},
+			#{zmdate},
+			#{rptvissign},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE xs_line SET 	
+			line_code = #{lineCode},
+			line_name = #{lineName},
+			trsubstation_id = #{trsubstationId},
+			isparline = #{isparline},
+			voltage = #{voltage},
+			isspecline = #{isspecline},
+			fp_svalue = #{fpSvalue},
+			fp_evalue = #{fpEvalue},
+			fp_subjoinqua = #{fpSubjoinqua},
+			fp_chmeter = #{fpChmeter},
+			fp_excerpqua = #{fpExcerpqua},
+			fup_svalue = #{fupSvalue},
+			fup_evalue = #{fupEvalue},
+			fup_subjoinqua = #{fupSubjoinqua},
+			fup_chmeter = #{fupChmeter},
+			fup_excerpqua = #{fupExcerpqua},
+			fp_totalqua = #{fpTotalqua},
+			fup_totalqua = #{fupTotalqua},
+			rp_svalue = #{rpSvalue},
+			rp_evalue = #{rpEvalue},
+			rp_subjoinqua = #{rpSubjoinqua},
+			rp_chmeter = #{rpChmeter},
+			rp_excerpqua = #{rpExcerpqua},
+			rp_totalqua = #{rpTotalqua},
+			rup_svalue = #{rupSvalue},
+			rup_evalue = #{rupEvalue},
+			rup_subjoinqua = #{rupSubjoinqua},
+			rup_chmeter = #{rupChmeter},
+			rup_excerpqua = #{rupExcerpqua},
+			rup_totalqua = #{rupTotalqua},
+			p_totalqua = #{pTotalqua},
+			up_totalqua = #{upTotalqua},
+			resistance = #{resistance},
+			unload_waste = #{unloadWaste},
+			cir_waste = #{cirWaste},
+			temperature = #{temperature},
+			k1 = #{k1},
+			k = #{k},
+			hours = #{hours},
+			intefactor = #{intefactor},
+			maxcapacity = #{maxcapacity},
+			capacity = #{capacity},
+			powerfactor = #{powerfactor},
+			sche_wrate = #{scheWrate},
+			changesign = #{changesign},
+			prflag = #{prflag},
+			qmdate = #{qmdate},
+			zmdate = #{zmdate},
+			rptvissign = #{rptvissign}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateAll">
+		UPDATE xs_line SET 			
+			qmdate = #{qmdate},
+			zmdate = #{zmdate}	
+	</update>
+	
+	<update id="delete">
+		UPDATE xs_line SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

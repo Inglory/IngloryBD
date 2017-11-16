@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yee.yide.llas.jcxx.dao.XsTrsubstationDao">
+    
+	<sql id="xsTrsubstationColumns">
+		a.id AS "id",
+		a.trsubstation_code AS "trsubstationCode",
+		a.name AS "name",
+		a.shortname AS "shortname",
+		a.voltargrade AS "voltargrade",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="xsTrsubstationJoins">
+	</sql>
+    
+	<select id="get" resultType="XsTrsubstation">
+		SELECT 
+			<include refid="xsTrsubstationColumns"/>
+		FROM xs_trsubstation a
+		<include refid="xsTrsubstationJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getByCode" resultType="XsTrsubstation">
+		SELECT 
+			<include refid="xsTrsubstationColumns"/>
+		FROM xs_trsubstation a
+		<include refid="xsTrsubstationJoins"/>
+		WHERE a.trsubstation_code = #{trsubstationCode}
+	</select>
+	
+	<select id="findList" resultType="XsTrsubstation">
+		SELECT 
+			<include refid="xsTrsubstationColumns"/>
+		FROM xs_trsubstation a
+		<include refid="xsTrsubstationJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="trsubstationCode != null and trsubstationCode != ''">
+				AND a.trsubstation_code = #{trsubstationCode}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="voltargrade != null and voltargrade != ''">
+				AND a.voltargrade = #{voltargrade}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="XsTrsubstation">
+		SELECT 
+			<include refid="xsTrsubstationColumns"/>
+		FROM xs_trsubstation a
+		<include refid="xsTrsubstationJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findBdzList" resultType="XsTrsubstation">
+		SELECT
+		<include refid="xsTrsubstationColumns"/>
+		FROM xs_trsubstation a
+		<include refid="xsTrsubstationJoins"/>
+		WHERE a.del_flag = "0"
+		ORDER BY trsubstation_code
+	</select>
+
+	<insert id="insert">
+		INSERT INTO xs_trsubstation(
+			id,
+			trsubstation_code,
+			name,
+			shortname,
+			voltargrade,
+			del_flag
+		) VALUES (
+			#{id},
+			#{trsubstationCode},
+			#{name},
+			#{shortname},
+			#{voltargrade},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE xs_trsubstation SET 	
+			trsubstation_code = #{trsubstationCode},
+			name = #{name},
+			shortname = #{shortname},
+			voltargrade = #{voltargrade}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE xs_trsubstation SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+
+</mapper>

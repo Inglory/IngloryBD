@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yee.yide.llas.tjxx.dao.XsStatistics35Dao">
+    
+	<sql id="xsStatistics35Columns">
+		a.id AS "id",
+		a.ym AS "ym",
+		a.qsrq AS "qsrq",
+		a.jsrq AS "jsrq",
+		a.line_id AS "lineId",
+		a.line_code AS "lineCode",
+		a.linename AS "linename",
+		a.power_qua AS "powerQua",
+		a.nonpower_qua AS "nonpowerQua",
+		a.sale_qua AS "saleQua",
+		a.waste_qua AS "wasteQua",
+		a.trwaste_qua AS "trwasteQua",
+		a.waste_rate AS "wasteRate",
+		a.comp_wrate AS "compWrate",
+		a.salequa_insdh AS "salequaInsdh",
+		a.wastequa_insdh AS "wastequaInsdh",
+		a.trwastequa_insdh AS "trwastequaInsdh",
+		a.wasterate_insdh AS "wasterateInsdh",
+		a.compwrate_insdh AS "compwrateInsdh",
+		a.powerrate AS "powerrate",
+		a.yglj AS "yglj",
+		a.wglj AS "wglj",
+		a.sslj AS "sslj",
+		a.sclj AS "sclj"
+	</sql>
+	
+	<sql id="xsStatistics35Joins">
+	</sql>
+    
+	<select id="get" resultType="XsStatistics35">
+		SELECT 
+			<include refid="xsStatistics35Columns"/>
+		FROM xs_statistics_35 a
+		<include refid="xsStatistics35Joins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="XsStatistics35">
+		SELECT 
+			<include refid="xsStatistics35Columns"/>
+		FROM xs_statistics_35 a
+		<include refid="xsStatistics35Joins"/>
+		<where>
+			
+			<if test="ym != null and ym != ''">
+				AND a.ym = #{ym}
+			</if>
+			<if test="qsrq != null and qsrq != ''">
+				AND a.qsrq = #{qsrq}
+			</if>
+			<if test="jsrq != null and jsrq != ''">
+				AND a.jsrq = #{jsrq}
+			</if>
+			<if test="lineId != null and lineId != ''">
+				AND a.line_id = #{lineId}
+			</if>
+			<if test="lineCode != null and lineCode != ''">
+				AND a.line_code = #{lineCode}
+			</if>
+			<if test="linename != null and linename != ''">
+				AND a.linename = #{linename}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="XsStatistics35">
+		SELECT 
+			<include refid="xsStatistics35Columns"/>
+		FROM xs_statistics_35 a
+		<include refid="xsStatistics35Joins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO xs_statistics_35(
+			id,
+			ym,
+			qsrq,
+			jsrq,
+			line_id,
+			line_code,
+			linename,
+			power_qua,
+			nonpower_qua,
+			sale_qua,
+			waste_qua,
+			trwaste_qua,
+			waste_rate,
+			comp_wrate,
+			salequa_insdh,
+			wastequa_insdh,
+			trwastequa_insdh,
+			wasterate_insdh,
+			compwrate_insdh,
+			powerrate,
+			yglj,
+			wglj,
+			sslj,
+			sclj
+		) VALUES (
+			#{id},
+			#{ym},
+			#{qsrq},
+			#{jsrq},
+			#{lineId},
+			#{lineCode},
+			#{linename},
+			#{powerQua},
+			#{nonpowerQua},
+			#{saleQua},
+			#{wasteQua},
+			#{trwasteQua},
+			#{wasteRate},
+			#{compWrate},
+			#{salequaInsdh},
+			#{wastequaInsdh},
+			#{trwastequaInsdh},
+			#{wasterateInsdh},
+			#{compwrateInsdh},
+			#{powerrate},
+			#{yglj},
+			#{wglj},
+			#{sslj},
+			#{sclj}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE xs_statistics_35 SET 	
+			ym = #{ym},
+			qsrq = #{qsrq},
+			jsrq = #{jsrq},
+			line_id = #{lineId},
+			line_code = #{lineCode},
+			linename = #{linename},
+			power_qua = #{powerQua},
+			nonpower_qua = #{nonpowerQua},
+			sale_qua = #{saleQua},
+			waste_qua = #{wasteQua},
+			trwaste_qua = #{trwasteQua},
+			waste_rate = #{wasteRate},
+			comp_wrate = #{compWrate},
+			salequa_insdh = #{salequaInsdh},
+			wastequa_insdh = #{wastequaInsdh},
+			trwastequa_insdh = #{trwastequaInsdh},
+			wasterate_insdh = #{wasterateInsdh},
+			compwrate_insdh = #{compwrateInsdh},
+			powerrate = #{powerrate},
+			yglj = #{yglj},
+			wglj = #{wglj},
+			sslj = #{sslj},
+			sclj = #{sclj}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM xs_statistics_35
+		WHERE id = #{id}
+	</update>
+
+	<update id="deleteQsrqToJsrq">
+		DELETE FROM xs_statistics_35
+		WHERE qsrq = #{qsrq} AND jsrq = #{jsrq}
+	</update>
+
+</mapper>

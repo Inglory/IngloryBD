@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yee.yide.llas.tjgx.dao.XsRelation35Dao">
+    
+	<sql id="xsRelation35Columns">
+		a.id AS "id",
+		a.parline_id AS "parlineId",
+		l1.line_name AS "parlineName",
+		a.line_id AS "lineId",
+		l2.line_name AS "lineName",
+		a.qua_kind AS "quaKind",
+		a.cal_kind AS "calKind"
+	</sql>
+	
+	<sql id="xsRelation35Joins">
+		LEFT JOIN xs_line l1 ON l1.id = a.parline_id
+		LEFT JOIN xs_line l2 ON l2.id = a.line_id
+	</sql>
+    
+	<select id="get" resultType="XsRelation35">
+		SELECT 
+			<include refid="xsRelation35Columns"/>
+		FROM xs_relation_35 a
+		<include refid="xsRelation35Joins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="XsRelation35">
+		SELECT 
+			<include refid="xsRelation35Columns"/>
+		FROM xs_relation_35 a
+		<include refid="xsRelation35Joins"/>
+		<where>
+			
+			<if test="parlineId != null and parlineId != ''">
+				AND a.parline_id = #{parlineId}
+			</if>
+			<if test="lineId != null and lineId != ''">
+				AND a.line_id = #{lineId}
+			</if>
+			<if test="quaKind != null and quaKind != ''">
+				AND a.qua_kind = #{quaKind}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="XsRelation35">
+		SELECT 
+			<include refid="xsRelation35Columns"/>
+		FROM xs_relation_35 a
+		<include refid="xsRelation35Joins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO xs_relation_35(
+			id,
+			parline_id,
+			line_id,
+			qua_kind,
+			cal_kind
+		) VALUES (
+			#{id},
+			#{parlineId},
+			#{lineId},
+			#{quaKind},
+			#{calKind}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE xs_relation_35 SET 	
+			parline_id = #{parlineId},
+			line_id = #{lineId},
+			qua_kind = #{quaKind},
+			cal_kind = #{calKind}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM xs_relation_35
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

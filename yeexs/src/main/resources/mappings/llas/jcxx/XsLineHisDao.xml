@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yee.yide.llas.jcxx.dao.XsLineHisDao">
+    
+	<sql id="xsLineHisColumns">
+		a.id AS "id",
+		a.line_code AS "lineCode",
+		a.line_name AS "lineName",
+		a.trsubstation_id AS "trsubstationId",
+		a.trsubstation_name AS "trsubstationName",
+		a.isparline AS "isparline",
+		a.voltage AS "voltage",
+		a.isspecline AS "isspecline",
+		a.fp_svalue AS "fpSvalue",
+		a.fp_evalue AS "fpEvalue",
+		a.fp_subjoinqua AS "fpSubjoinqua",
+		a.fp_chmeter AS "fpChmeter",
+		a.fp_excerpqua AS "fpExcerpqua",
+		a.fup_svalue AS "fupSvalue",
+		a.fup_evalue AS "fupEvalue",
+		a.fup_subjoinqua AS "fupSubjoinqua",
+		a.fup_chmeter AS "fupChmeter",
+		a.fup_excerpqua AS "fupExcerpqua",
+		a.fp_totalqua AS "fpTotalqua",
+		a.fup_totalqua AS "fupTotalqua",
+		a.rp_svalue AS "rpSvalue",
+		a.rp_evalue AS "rpEvalue",
+		a.rp_subjoinqua AS "rpSubjoinqua",
+		a.rp_chmeter AS "rpChmeter",
+		a.rp_excerpqua AS "rpExcerpqua",
+		a.rp_totalqua AS "rpTotalqua",
+		a.rup_svalue AS "rupSvalue",
+		a.rup_evalue AS "rupEvalue",
+		a.rup_subjoinqua AS "rupSubjoinqua",
+		a.rup_chmeter AS "rupChmeter",
+		a.rup_excerpqua AS "rupExcerpqua",
+		a.rup_totalqua AS "rupTotalqua",
+		a.p_totalqua AS "pTotalqua",
+		a.up_totalqua AS "upTotalqua",
+		a.resistance AS "resistance",
+		a.unload_waste AS "unloadWaste",
+		a.cir_waste AS "cirWaste",
+		a.temperature AS "temperature",
+		a.k1 AS "k1",
+		a.k AS "k",
+		a.hours AS "hours",
+		a.intefactor AS "intefactor",
+		a.maxcapacity AS "maxcapacity",
+		a.capacity AS "capacity",
+		a.powerfactor AS "powerfactor",
+		a.sche_wrate AS "scheWrate",
+		a.changesign AS "changesign",
+		a.prflag AS "prflag",
+		a.qmdate AS "qmdate",
+		a.zmdate AS "zmdate",
+		a.rptvissign AS "rptvissign",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="xsLineHisJoins">
+	</sql>
+    
+	<select id="get" resultType="XsLineHis">
+		SELECT 
+			<include refid="xsLineHisColumns"/>
+		FROM xs_line_his a
+		<include refid="xsLineHisJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="XsLineHis">
+		SELECT 
+			<include refid="xsLineHisColumns"/>
+		FROM xs_line_his a
+		<include refid="xsLineHisJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="lineCode != null and lineCode != ''">
+				AND a.line_code = #{lineCode}
+			</if>
+			<if test="lineName != null and lineName != ''">
+				AND a.line_name = #{lineName}
+			</if>
+			<if test="trsubstationName != null and trsubstationName != ''">
+				AND a.trsubstation_name = #{trsubstationName}
+			</if>
+			<if test="qmdate != null and qmdate != ''">
+				AND a.qmdate = #{qmdate}
+			</if>
+			<if test="zmdate != null and zmdate != ''">
+				AND a.zmdate = #{zmdate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="XsLineHis">
+		SELECT 
+			<include refid="xsLineHisColumns"/>
+		FROM xs_line_his a
+		<include refid="xsLineHisJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO xs_line_his(
+			id,
+			line_code,
+			trsubstation_id,
+			trsubstation_name,
+			isparline,
+			voltage,
+			isspecline,
+			fp_svalue,
+			fp_evalue,
+			fp_subjoinqua,
+			fp_chmeter,
+			fp_excerpqua,
+			fup_svalue,
+			fup_evalue,
+			fup_subjoinqua,
+			fup_chmeter,
+			fup_excerpqua,
+			fp_totalqua,
+			fup_totalqua,
+			rp_svalue,
+			rp_evalue,
+			rp_subjoinqua,
+			rp_chmeter,
+			rp_excerpqua,
+			rp_totalqua,
+			rup_svalue,
+			rup_evalue,
+			rup_subjoinqua,
+			rup_chmeter,
+			rup_excerpqua,
+			rup_totalqua,
+			p_totalqua,
+			up_totalqua,
+			resistance,
+			unload_waste,
+			cir_waste,
+			temperature,
+			k1,
+			k,
+			hours,
+			intefactor,
+			maxcapacity,
+			capacity,
+			powerfactor,
+			sche_wrate,
+			changesign,
+			prflag,
+			qmdate,
+			zmdate,
+			rptvissign,
+			del_flag
+		) VALUES (
+			#{id},
+			#{lineCode},
+			#{trsubstationId},
+			#{trsubstationName},
+			#{isparline},
+			#{voltage},
+			#{isspecline},
+			#{fpSvalue},
+			#{fpEvalue},
+			#{fpSubjoinqua},
+			#{fpChmeter},
+			#{fpExcerpqua},
+			#{fupSvalue},
+			#{fupEvalue},
+			#{fupSubjoinqua},
+			#{fupChmeter},
+			#{fupExcerpqua},
+			#{fpTotalqua},
+			#{fupTotalqua},
+			#{rpSvalue},
+			#{rpEvalue},
+			#{rpSubjoinqua},
+			#{rpChmeter},
+			#{rpExcerpqua},
+			#{rpTotalqua},
+			#{rupSvalue},
+			#{rupEvalue},
+			#{rupSubjoinqua},
+			#{rupChmeter},
+			#{rupExcerpqua},
+			#{rupTotalqua},
+			#{pTotalqua},
+			#{upTotalqua},
+			#{resistance},
+			#{unloadWaste},
+			#{cirWaste},
+			#{temperature},
+			#{k1},
+			#{k},
+			#{hours},
+			#{intefactor},
+			#{maxcapacity},
+			#{capacity},
+			#{powerfactor},
+			#{scheWrate},
+			#{changesign},
+			#{prflag},
+			#{qmdate},
+			#{zmdate},
+			#{rptvissign},
+			#{delFlag}
+		)
+	</insert>
+	
+	<insert id="insertHisData">
+		INSERT INTO xs_line_his(
+			id,
+			line_code,
+			line_name,
+			trsubstation_id,
+			trsubstation_name,
+			isparline,
+			voltage,
+			isspecline,
+			fp_svalue,
+			fp_evalue,
+			fp_subjoinqua,
+			fp_chmeter,
+			fp_excerpqua,
+			fup_svalue,
+			fup_evalue,
+			fup_subjoinqua,
+			fup_chmeter,
+			fup_excerpqua,
+			fp_totalqua,
+			fup_totalqua,
+			rp_svalue,
+			rp_evalue,
+			rp_subjoinqua,
+			rp_chmeter,
+			rp_excerpqua,
+			rp_totalqua,
+			rup_svalue,
+			rup_evalue,
+			rup_subjoinqua,
+			rup_chmeter,
+			rup_excerpqua,
+			rup_totalqua,
+			p_totalqua,
+			up_totalqua,
+			resistance,
+			unload_waste,
+			cir_waste,
+			temperature,
+			k1,
+			k,
+			hours,
+			intefactor,
+			maxcapacity,
+			capacity,
+			powerfactor,
+			sche_wrate,
+			changesign,
+			prflag,
+			qmdate,
+			zmdate,
+			rptvissign,
+			del_flag
+		) select  
+		CONCAT(l.id,DATE_FORMAT( l.qmdate,"%Y-%m-%d"),DATE_FORMAT( l.zmdate,"%Y-%m-%d")),
+			l.line_code,
+			l.line_name,
+			l.trsubstation_id,
+			t.name,
+			l.isparline,
+			l.voltage,
+			l.isspecline,
+			l.fp_svalue,
+			l.fp_evalue,
+			l.fp_subjoinqua,
+			l.fp_chmeter,
+			l.fp_excerpqua,
+			l.fup_svalue,
+			l.fup_evalue,
+			l.fup_subjoinqua,
+			l.fup_chmeter,
+			l.fup_excerpqua,
+			l.fp_totalqua,
+			l.fup_totalqua,
+			l.rp_svalue,
+			l.rp_evalue,
+			l.rp_subjoinqua,
+			l.rp_chmeter,
+			l.rp_excerpqua,
+			l.rp_totalqua,
+			l.rup_svalue,
+			l.rup_evalue,
+			l.rup_subjoinqua,
+			l.rup_chmeter,
+			l.rup_excerpqua,
+			l.rup_totalqua,
+			l.p_totalqua,
+			l.up_totalqua,
+			l.resistance,
+			l.unload_waste,
+			l.cir_waste,
+			l.temperature,
+			l.k1,
+			l.k,
+			l.hours,
+			l.intefactor,
+			l.maxcapacity,
+			l.capacity,
+			l.powerfactor,
+			l.sche_wrate,
+			l.changesign,
+			l.prflag,
+			l.qmdate,
+			l.zmdate,
+			l.rptvissign,
+			l.del_flag
+			
+			from xs_line l,xs_trsubstation t where l.trsubstation_id = t.id
+
+	</insert>
+	
+	<update id="update">
+		UPDATE xs_line_his SET 	
+			line_code = #{lineCode},
+			line_name = #{lineName},
+			trsubstation_id = #{trsubstationId},
+			trsubstation_name = #{trsubstationName},
+			isparline = #{isparline},
+			voltage = #{voltage},
+			isspecline = #{isspecline},
+			fp_svalue = #{fpSvalue},
+			fp_evalue = #{fpEvalue},
+			fp_subjoinqua = #{fpSubjoinqua},
+			fp_chmeter = #{fpChmeter},
+			fp_excerpqua = #{fpExcerpqua},
+			fup_svalue = #{fupSvalue},
+			fup_evalue = #{fupEvalue},
+			fup_subjoinqua = #{fupSubjoinqua},
+			fup_chmeter = #{fupChmeter},
+			fup_excerpqua = #{fupExcerpqua},
+			fp_totalqua = #{fpTotalqua},
+			fup_totalqua = #{fupTotalqua},
+			rp_svalue = #{rpSvalue},
+			rp_evalue = #{rpEvalue},
+			rp_subjoinqua = #{rpSubjoinqua},
+			rp_chmeter = #{rpChmeter},
+			rp_excerpqua = #{rpExcerpqua},
+			rp_totalqua = #{rpTotalqua},
+			rup_svalue = #{rupSvalue},
+			rup_evalue = #{rupEvalue},
+			rup_subjoinqua = #{rupSubjoinqua},
+			rup_chmeter = #{rupChmeter},
+			rup_excerpqua = #{rupExcerpqua},
+			rup_totalqua = #{rupTotalqua},
+			p_totalqua = #{pTotalqua},
+			up_totalqua = #{upTotalqua},
+			resistance = #{resistance},
+			unload_waste = #{unloadWaste},
+			cir_waste = #{cirWaste},
+			temperature = #{temperature},
+			k1 = #{k1},
+			k = #{k},
+			hours = #{hours},
+			intefactor = #{intefactor},
+			maxcapacity = #{maxcapacity},
+			capacity = #{capacity},
+			powerfactor = #{powerfactor},
+			sche_wrate = #{scheWrate},
+			changesign = #{changesign},
+			prflag = #{prflag},
+			qmdate = #{qmdate},
+			zmdate = #{zmdate},
+			rptvissign = #{rptvissign}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE xs_line_his SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

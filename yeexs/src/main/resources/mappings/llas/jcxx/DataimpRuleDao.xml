@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yee.yide.llas.jcxx.dao.DataimpRuleDao">
+    
+	<sql id="dataimpRuleColumns">
+		a.id AS "id",
+		a.rule_name AS "ruleName",
+		a.source_type AS "sourceType",
+		a.source AS "source",
+		a.destination_type AS "destinationType",
+		a.destination AS "destination",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="dataimpRuleJoins">
+	</sql>
+    
+	<select id="get" resultType="DataimpRule">
+		SELECT 
+			<include refid="dataimpRuleColumns"/>
+		FROM dataimp_rule a
+		<include refid="dataimpRuleJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DataimpRule">
+		SELECT 
+			<include refid="dataimpRuleColumns"/>
+		FROM dataimp_rule a
+		<include refid="dataimpRuleJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="ruleName != null and ruleName != ''">
+				AND a.rule_name = #{ruleName}
+			</if>
+			<if test="sourceType != null and sourceType != ''">
+				AND a.source_type = #{sourceType}
+			</if>
+			<if test="source != null and source != ''">
+				AND a.source = #{source}
+			</if>
+			<if test="destinationType != null and destinationType != ''">
+				AND a.destination_type = #{destinationType}
+			</if>
+			<if test="destination != null and destination != ''">
+				AND a.destination = #{destination}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DataimpRule">
+		SELECT 
+			<include refid="dataimpRuleColumns"/>
+		FROM dataimp_rule a
+		<include refid="dataimpRuleJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO dataimp_rule(
+			id,
+			rule_name,
+			source_type,
+			source,
+			destination_type,
+			destination,
+			del_flag
+		) VALUES (
+			#{id},
+			#{ruleName},
+			#{sourceType},
+			#{source},
+			#{destinationType},
+			#{destination},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE dataimp_rule SET 	
+			rule_name = #{ruleName},
+			source_type = #{sourceType},
+			source = #{source},
+			destination_type = #{destinationType},
+			destination = #{destination}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE dataimp_rule SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

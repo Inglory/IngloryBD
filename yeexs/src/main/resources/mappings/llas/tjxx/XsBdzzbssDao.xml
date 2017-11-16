@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yee.yide.llas.tjxx.dao.XsBdzzbssDao">
+    
+	<sql id="xsBdzzbssColumns">
+		a.id AS "id",
+		a.ym AS "ym",
+		a.qsrq AS "qsrq",
+		a.jsrq AS "jsrq",
+		a.zbid AS "zbid",
+		a.zbbh AS "zbbh",
+		a.zbmc AS "zbmc",
+		a.ssbdz AS "ssbdz",
+		a.bysr AS "bysr",
+		a.bysc AS "bysc",
+		a.byss AS "byss",
+		a.byssl AS "byssl",
+		a.ljsr AS "ljsr",
+		a.ljsc AS "ljsc",
+		a.ljss AS "ljss",
+		a.ljssl AS "ljssl",
+		a.wgdl AS "wgdl",
+		a.ljwg AS "ljwg",
+		a.glys AS "glys",
+		a.ljglys AS "ljglys"
+	</sql>
+	
+	<sql id="xsBdzzbssJoins">
+	</sql>
+    
+	<select id="get" resultType="XsBdzzbss">
+		SELECT 
+			<include refid="xsBdzzbssColumns"/>
+		FROM xs_bdzzbss a
+		<include refid="xsBdzzbssJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="XsBdzzbss">
+		SELECT 
+			<include refid="xsBdzzbssColumns"/>
+		FROM xs_bdzzbss a
+		<include refid="xsBdzzbssJoins"/>
+		<where>
+			
+			<if test="ym != null and ym != ''">
+				AND a.ym = #{ym}
+			</if>
+			<if test="qsrq != null and qsrq != ''">
+				AND a.qsrq = #{qsrq}
+			</if>
+			<if test="jsrq != null and jsrq != ''">
+				AND a.jsrq = #{jsrq}
+			</if>
+			<if test="zbid != null and zbid != ''">
+				AND a.zbid = #{zbid}
+			</if>
+			<if test="zbbh != null and zbbh != ''">
+				AND a.zbbh = #{zbbh}
+			</if>
+			<if test="zbmc != null and zbmc != ''">
+				AND a.zbmc = #{zbmc}
+			</if>
+			<if test="ssbdz != null and ssbdz != ''">
+				AND a.ssbdz = #{ssbdz}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="XsBdzzbss">
+		SELECT 
+			<include refid="xsBdzzbssColumns"/>
+		FROM xs_bdzzbss a
+		<include refid="xsBdzzbssJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO xs_bdzzbss(
+			id,
+			ym,
+			qsrq,
+			jsrq,
+			zbid,
+			zbbh,
+			zbmc,
+			ssbdz,
+			bysr,
+			bysc,
+			byss,
+			byssl,
+			ljsr,
+			ljsc,
+			ljss,
+			ljssl,
+			wgdl,
+			ljwg,
+			glys,
+			ljglys
+		) VALUES (
+			#{id},
+			#{ym},
+			#{qsrq},
+			#{jsrq},
+			#{zbid},
+			#{zbbh},
+			#{zbmc},
+			#{ssbdz},
+			#{bysr},
+			#{bysc},
+			#{byss},
+			#{byssl},
+			#{ljsr},
+			#{ljsc},
+			#{ljss},
+			#{ljssl},
+			#{wgdl},
+			#{ljwg},
+			#{glys},
+			#{ljglys}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE xs_bdzzbss SET 	
+			ym = #{ym},
+			qsrq = #{qsrq},
+			jsrq = #{jsrq},
+			zbid = #{zbid},
+			zbbh = #{zbbh},
+			zbmc = #{zbmc},
+			ssbdz = #{ssbdz},
+			bysr = #{bysr},
+			bysc = #{bysc},
+			byss = #{byss},
+			byssl = #{byssl},
+			ljsr = #{ljsr},
+			ljsc = #{ljsc},
+			ljss = #{ljss},
+			ljssl = #{ljssl},
+			wgdl = #{wgdl},
+			ljwg = #{ljwg},
+			glys = #{glys},
+			ljglys = #{ljglys}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM xs_bdzzbss
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yee.yide.llas.tjgx.dao.XsGxBsDao">
+    
+	<sql id="xsGxBsColumns">
+		a.id AS "id",
+		a.tjdx AS "tjdx",
+		l1.name AS "tjdxName",
+		a.tjdllx AS "tjdllx",
+		a.jld AS "jld",
+		l2.line_name AS "lineName",
+		a.jsdl AS "jsdl",
+		a.jsfs AS "jsfs"
+	</sql>
+	
+	<sql id="xsGxBsJoins">
+		LEFT JOIN xs_trsubstation l1 ON l1.id = a.tjdx
+		LEFT JOIN xs_line l2 ON l2.id = a.jld
+	</sql>
+    
+	<select id="get" resultType="XsGxBs">
+		SELECT 
+			<include refid="xsGxBsColumns"/>
+		FROM xs_gx_bs a
+		<include refid="xsGxBsJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="XsGxBs">
+		SELECT 
+			<include refid="xsGxBsColumns"/>
+		FROM xs_gx_bs a
+		<include refid="xsGxBsJoins"/>
+		<where>
+			
+			<if test="tjdx != null and tjdx != ''">
+				AND a.tjdx = #{tjdx}
+			</if>
+			<if test="tjdllx != null and tjdllx != ''">
+				AND a.tjdllx = #{tjdllx}
+			</if>
+			<if test="jld != null and jld != ''">
+				AND a.jld = #{jld}
+			</if>
+			<if test="jsdl != null and jsdl != ''">
+				AND a.jsdl = #{jsdl}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="XsGxBs">
+		SELECT 
+			<include refid="xsGxBsColumns"/>
+		FROM xs_gx_bs a
+		<include refid="xsGxBsJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO xs_gx_bs(
+			id,
+			tjdx,
+			tjdllx,
+			jld,
+			jsdl,
+			jsfs
+		) VALUES (
+			#{id},
+			#{tjdx},
+			#{tjdllx},
+			#{jld},
+			#{jsdl},
+			#{jsfs}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE xs_gx_bs SET 	
+			tjdx = #{tjdx},
+			tjdllx = #{tjdllx},
+			jld = #{jld},
+			jsdl = #{jsdl},
+			jsfs = #{jsfs}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM xs_gx_bs
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

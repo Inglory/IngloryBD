@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yee.yide.llas.jcxx.dao.XsBdzzbDao">
+    
+	<sql id="xsBdzzbColumns">
+		a.id AS "id",
+		a.zbbh AS "zbbh",
+		a.zbmc AS "zbmc",
+		a.ssbdz AS "ssbdz",
+		l1.name AS "trsubstationName",
+		a.zt AS "zt",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="xsBdzzbJoins">
+		LEFT JOIN xs_trsubstation l1 ON l1.id = a.ssbdz
+	</sql>
+    
+	<select id="get" resultType="XsBdzzb">
+		SELECT 
+			<include refid="xsBdzzbColumns"/>
+		FROM xs_bdzzb a
+		<include refid="xsBdzzbJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="XsBdzzb">
+		SELECT 
+			<include refid="xsBdzzbColumns"/>
+		FROM xs_bdzzb a
+		<include refid="xsBdzzbJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="zbbh != null and zbbh != ''">
+				AND a.zbbh = #{zbbh}
+			</if>
+			<if test="zbmc != null and zbmc != ''">
+				AND a.zbmc = #{zbmc}
+			</if>
+			<if test="ssbdz != null and ssbdz != ''">
+				AND a.ssbdz = #{ssbdz}
+			</if>
+			<if test="zt != null and zt != ''">
+				AND a.zt = #{zt}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="XsBdzzb">
+		SELECT 
+			<include refid="xsBdzzbColumns"/>
+		FROM xs_bdzzb a
+		<include refid="xsBdzzbJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllListDropdown" resultType="XsBdzzb">
+		SELECT
+		<include refid="xsBdzzbColumns"/>
+		FROM xs_bdzzb a
+		<include refid="xsBdzzbJoins"/>
+		<where>
+			a.del_flag = "0"
+		</where>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO xs_bdzzb(
+			id,
+			zbbh,
+			zbmc,
+			ssbdz,
+			zt,
+			del_flag
+		) VALUES (
+			#{id},
+			#{zbbh},
+			#{zbmc},
+			#{ssbdz},
+			#{zt},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE xs_bdzzb SET 	
+			zbbh = #{zbbh},
+			zbmc = #{zbmc},
+			ssbdz = #{ssbdz},
+			zt = #{zt}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE xs_bdzzb SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yee.yide.llas.tjgx.dao.XsRelation10Dao">
+    
+	<sql id="xsRelation10Columns">
+		a.id AS "id",
+		a.line_code AS "lineCode",
+		a.line_id AS "lineId"
+	</sql>
+	
+	<sql id="xsRelation10Joins">
+	</sql>
+    
+	<select id="get" resultType="XsRelation10">
+		SELECT 
+			<include refid="xsRelation10Columns"/>
+		FROM xs_relation_10 a
+		<include refid="xsRelation10Joins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="XsRelation10">
+		SELECT 
+			<include refid="xsRelation10Columns"/>
+		FROM xs_relation_10 a
+		<include refid="xsRelation10Joins"/>
+		<where>
+			
+			<if test="lineCode != null and lineCode != ''">
+				AND a.line_code = #{lineCode}
+			</if>
+			<if test="lineId != null and lineId != ''">
+				AND a.line_id = #{lineId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="XsRelation10">
+		SELECT 
+			<include refid="xsRelation10Columns"/>
+		FROM xs_relation_10 a
+		<include refid="xsRelation10Joins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO xs_relation_10(
+			id,
+			line_id
+		) VALUES (
+			#{id},
+			#{lineId}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE xs_relation_10 SET 	
+			line_id = #{lineId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM xs_relation_10
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

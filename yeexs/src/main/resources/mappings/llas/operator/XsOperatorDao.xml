@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yee.yide.llas.operator.dao.XsOperatorDao">
+    
+	<sql id="xsOperatorColumns">
+		a.id AS "id",
+		a.serial_number AS "serialNumber",
+		a.principal AS "principal",
+		a.lister AS "lister",
+		a.day AS "day",
+		a.hours AS "hours",
+		a.ym AS "ym",
+		a.qsrq AS "qsrq",
+		a.jsrq AS "jsrq",
+		a.jcbz AS "jcbz",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="xsOperatorJoins">
+	</sql>
+    
+	<select id="get" resultType="XsOperator">
+		SELECT 
+			<include refid="xsOperatorColumns"/>
+		FROM xs_operator a
+		<include refid="xsOperatorJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getMaxSerialNumber" resultType="Integer">
+		SELECT max(a.serial_number) 
+		FROM  xs_operator a
+	</select>
+	
+	<select id="findList" resultType="XsOperator">
+		SELECT 
+			<include refid="xsOperatorColumns"/>
+		FROM xs_operator a
+		<include refid="xsOperatorJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="lister != null and lister != ''">
+				AND a.lister = #{lister}
+			</if>
+			<if test="qsrq != null and qsrq != ''">
+				AND a.qsrq = #{qsrq}
+			</if>
+			<if test="jsrq != null and jsrq != ''">
+				AND a.jsrq = #{jsrq}
+			</if>
+			<if test="jcbz != null and jcbz != ''">
+				AND a.jcbz = #{jcbz}
+			</if>
+			
+		</where>
+				ORDER BY serial_number DESC
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''"> AND  ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="XsOperator">
+		SELECT 
+			<include refid="xsOperatorColumns"/>
+		FROM xs_operator a
+		<include refid="xsOperatorJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>	
+		ORDER BY serial_number DESC	
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				 AND ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO xs_operator(
+			id,
+			serial_number,
+			principal,
+			lister,
+			day,
+			hours,
+			ym,
+			qsrq,
+			jsrq,
+			jcbz,
+			del_flag
+		) VALUES (
+			#{id},
+			#{serialNumber},
+			#{principal},
+			#{lister},
+			#{day},
+			#{hours},
+			#{ym},
+			#{qsrq},
+			#{jsrq},
+			#{jcbz},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE xs_operator SET 	
+			serial_number = #{serialNumber},
+			principal = #{principal},
+			lister = #{lister},
+			day = #{day},
+			hours = #{hours},
+			ym = #{ym},
+			qsrq = #{qsrq},
+			jsrq = #{jsrq},
+			jcbz = #{jcbz}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE xs_operator SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

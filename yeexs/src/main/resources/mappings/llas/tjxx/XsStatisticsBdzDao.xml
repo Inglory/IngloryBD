@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yee.yide.llas.tjxx.dao.XsStatisticsBdzDao">
+    
+	<sql id="xsStatisticsBdzColumns">
+		a.id AS "id",
+		a.ym AS "ym",
+		a.trsubstation_id AS "trsubstationId",
+		a.power_qua AS "powerQua",
+		a.nonpower_qua AS "nonpowerQua",
+		a.sale_qua AS "saleQua",
+		a.waste_qua AS "wasteQua",
+		a.trwaste_qua AS "trwasteQua",
+		a.powerrate AS "powerrate",
+		a.waste_rate AS "wasteRate",
+		a.comp_wrate AS "compWrate",
+		a.salequa_insdh AS "salequaInsdh",
+		a.wastequa_insdh AS "wastequaInsdh",
+		a.trwastequa_insdh AS "trwastequaInsdh",
+		a.wasterate_insdh AS "wasterateInsdh",
+		a.compwrate_insdh AS "compwrateInsdh",
+		a.yglj AS "yglj",
+		a.wglj AS "wglj",
+		a.sslj AS "sslj",
+		a.sclj AS "sclj"
+	</sql>
+	
+	<sql id="xsStatisticsBdzJoins">
+	</sql>
+    
+	<select id="get" resultType="XsStatisticsBdz">
+		SELECT 
+			<include refid="xsStatisticsBdzColumns"/>
+		FROM xs_statistics_bdz a
+		<include refid="xsStatisticsBdzJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="XsStatisticsBdz">
+		SELECT 
+			<include refid="xsStatisticsBdzColumns"/>
+		FROM xs_statistics_bdz a
+		<include refid="xsStatisticsBdzJoins"/>
+		<where>
+			
+			<if test="ym != null and ym != ''">
+				AND a.ym = #{ym}
+			</if>
+			<if test="trsubstationId != null and trsubstationId != ''">
+				AND a.trsubstation_id = #{trsubstationId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="XsStatisticsBdz">
+		SELECT 
+			<include refid="xsStatisticsBdzColumns"/>
+		FROM xs_statistics_bdz a
+		<include refid="xsStatisticsBdzJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO xs_statistics_bdz(
+			id,
+			ym,
+			trsubstation_id,
+			power_qua,
+			nonpower_qua,
+			sale_qua,
+			waste_qua,
+			trwaste_qua,
+			powerrate,
+			waste_rate,
+			comp_wrate,
+			salequa_insdh,
+			wastequa_insdh,
+			trwastequa_insdh,
+			wasterate_insdh,
+			compwrate_insdh,
+			yglj,
+			wglj,
+			sslj,
+			sclj
+		) VALUES (
+			#{id},
+			#{ym},
+			#{trsubstationId},
+			#{powerQua},
+			#{nonpowerQua},
+			#{saleQua},
+			#{wasteQua},
+			#{trwasteQua},
+			#{powerrate},
+			#{wasteRate},
+			#{compWrate},
+			#{salequaInsdh},
+			#{wastequaInsdh},
+			#{trwastequaInsdh},
+			#{wasterateInsdh},
+			#{compwrateInsdh},
+			#{yglj},
+			#{wglj},
+			#{sslj},
+			#{sclj}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE xs_statistics_bdz SET 	
+			ym = #{ym},
+			trsubstation_id = #{trsubstationId},
+			power_qua = #{powerQua},
+			nonpower_qua = #{nonpowerQua},
+			sale_qua = #{saleQua},
+			waste_qua = #{wasteQua},
+			trwaste_qua = #{trwasteQua},
+			powerrate = #{powerrate},
+			waste_rate = #{wasteRate},
+			comp_wrate = #{compWrate},
+			salequa_insdh = #{salequaInsdh},
+			wastequa_insdh = #{wastequaInsdh},
+			trwastequa_insdh = #{trwastequaInsdh},
+			wasterate_insdh = #{wasterateInsdh},
+			compwrate_insdh = #{compwrateInsdh},
+			yglj = #{yglj},
+			wglj = #{wglj},
+			sslj = #{sslj},
+			sclj = #{sclj}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM xs_statistics_bdz
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

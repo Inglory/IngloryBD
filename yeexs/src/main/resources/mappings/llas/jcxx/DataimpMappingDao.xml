@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yee.yide.llas.jcxx.dao.DataimpMappingDao">
+    
+	<sql id="dataimpMappingColumns">
+		a.id AS "id",
+		a.rule_id AS "dataimpRule.id",
+		a.source_field AS "sourceField",
+		a.excel_column AS "excelColumn",
+		a.excel_row AS "excelRow",
+		a.dest_field AS "destField",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="dataimpMappingJoins">
+		LEFT JOIN dataimp_rule b ON b.id = a.rule_id
+	</sql>
+    
+	<select id="get" resultType="DataimpMapping">
+		SELECT 
+			<include refid="dataimpMappingColumns"/>
+		FROM dataimp_mapping a
+		<include refid="dataimpMappingJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DataimpMapping">
+		SELECT 
+			<include refid="dataimpMappingColumns"/>
+		FROM dataimp_mapping a
+		<include refid="dataimpMappingJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="dataimpRule != null and dataimpRule.id != null and dataimpRule.id != ''">
+				AND a.rule_id = #{dataimpRule.id}
+			</if>
+			<if test="sourceField != null and sourceField != ''">
+				AND a.source_field = #{sourceField}
+			</if>
+			<if test="excelColumn != null and excelColumn != ''">
+				AND a.excel_column = #{excelColumn}
+			</if>
+			<if test="excelRow != null and excelRow != ''">
+				AND a.excel_row = #{excelRow}
+			</if>
+			<if test="destField != null and destField != ''">
+				AND a.dest_field = #{destField}
+			</if>
+			ORDER BY a.excel_column
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				AND ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DataimpMapping">
+		SELECT 
+			<include refid="dataimpMappingColumns"/>
+		FROM dataimp_mapping a
+		<include refid="dataimpMappingJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		ORDER BY a.excel_column
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				AND  ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO dataimp_mapping(
+			id,
+			rule_id,
+			source_field,
+			excel_column,
+			excel_row,
+			dest_field,
+			del_flag
+		) VALUES (
+			#{id},
+			#{dataimpRule.id},
+			#{sourceField},
+			#{excelColumn},
+			#{excelRow},
+			#{destField},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE dataimp_mapping SET 	
+			rule_id = #{dataimpRule.id},
+			source_field = #{sourceField},
+			excel_column = #{excelColumn},
+			excel_row = #{excelRow},
+			dest_field = #{destField}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE dataimp_mapping SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE rule_id = #{dataimpRule.id}
+			</otherwise>
+		</choose>
+	</update>
+	
+</mapper>

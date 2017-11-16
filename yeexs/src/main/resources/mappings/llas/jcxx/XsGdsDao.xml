@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yee.yide.llas.jcxx.dao.XsGdsDao">
+    
+	<sql id="xsGdsColumns">
+		a.bh AS "bh",
+		a.mc AS "mc",
+		a.organ_id AS "office",
+		a.id AS "id",
+		o3.name AS "office.name",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="xsGdsJoins">
+		LEFT JOIN sys_office o3 ON o3.id = a.organ_id
+	</sql>
+    
+	<select id="get" resultType="XsGds">
+		SELECT 
+			<include refid="xsGdsColumns"/>
+		FROM xs_gds a
+		<include refid="xsGdsJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="XsGds">
+	SELECT
+	<include refid="xsGdsColumns"/>
+	FROM xs_gds a
+	<include refid="xsGdsJoins"/>
+	<where>
+		a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="bh != null and bh != ''">
+			AND a.bh = #{bh}
+		</if>
+		<if test="mc != null and mc != ''">
+			AND a.mc = #{mc}
+		</if>
+	</where>
+	<choose>
+		<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+			ORDER BY ${page.orderBy}
+		</when>
+		<otherwise>
+		</otherwise>
+	</choose>
+</select>
+	
+	<select id="findAllList" resultType="XsGds">
+		SELECT 
+			<include refid="xsGdsColumns"/>
+		FROM xs_gds a
+		<include refid="xsGdsJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllListDropdown" resultType="XsGds">
+		SELECT
+		<include refid="xsGdsColumns"/>
+		FROM xs_gds a
+		<include refid="xsGdsJoins"/>
+		<where>
+			a.del_flag = "0"
+		</where>
+	</select>
+
+	
+	<insert id="insert">
+		INSERT INTO xs_gds(
+			bh,
+			mc,
+			organ_id,
+			id,
+			del_flag
+		) VALUES (
+			#{bh},
+			#{mc},
+			#{office.id},
+			#{id},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE xs_gds SET 	
+			bh = #{bh},
+			mc = #{mc},
+			organ_id = #{office.id}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE xs_gds SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yee.yide.llas.dljs.dao.XsLinewastageDao">
+    
+	<sql id="xsLinewastageColumns">
+		a.id AS "id",
+		a.line_id AS "lineId",
+		a.line_code AS "lineCode",
+		a.linename AS "linename",
+		a.qsrq AS "qsrq",
+		a.jsrq AS "jsrq",
+		a.sale_qua AS "saleQua",
+		a.salequa_insdh AS "salequaInsdh",
+		a.act_excerpqua AS "actExcerpqua",
+		a.trwaste_exsdh AS "trwasteExsdh",
+		a.trwaste_insdh AS "trwasteInsdh",
+		a.sdh_trwaste AS "sdhTrwaste",
+		a.com_trwaste AS "comTrwaste",
+		a.comtrwaste_insdh AS "comtrwasteInsdh",
+		a.sdh_comtrwaste AS "sdhComtrwaste",
+		a.speline_waste AS "spelineWaste",
+		a.qua1 AS "qua1",
+		a.qua2 AS "qua2",
+		a.waste_qua AS "wasteQua",
+		a.theory_trwaste AS "theoryTrwaste",
+		a.theory_wrate AS "theoryWrate",
+		a.theory_compwrate AS "theoryCompwrate",
+		a.act_wrate AS "actWrate",
+		a.comp_wrate AS "compWrate",
+		a.wrate_prscore AS "wratePrscore",
+		a.wrate_score AS "wrateScore",
+		a.act_powerrate AS "actPowerrate",
+		a.power_prscore AS "powerPrscore",
+		a.power_score AS "powerScore",
+		a.burgle AS "burgle",
+		a.copyerror AS "copyerror",
+		a.finalscore AS "finalscore",
+		a.others AS "others"
+	</sql>
+	
+	<sql id="xsLinewastageJoins">
+	</sql>
+    
+	<select id="get" resultType="XsLinewastage">
+		SELECT 
+			<include refid="xsLinewastageColumns"/>
+		FROM xs_linewastage a
+		<include refid="xsLinewastageJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="XsLinewastage">
+		SELECT 
+			<include refid="xsLinewastageColumns"/>
+		FROM xs_linewastage a
+		<include refid="xsLinewastageJoins"/>
+		<where>
+			
+			<if test="lineCode != null and lineCode != ''">
+				AND a.line_code = #{lineCode}
+			</if>
+			<if test="linename != null and linename != ''">
+				AND a.linename = #{linename}
+			</if>
+			<if test="qsrq != null and qsrq != ''">
+				AND a.qsrq = #{qsrq}
+			</if>
+			<if test="jsrq != null and jsrq != ''">
+				AND a.jsrq = #{jsrq}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="XsLinewastage">
+		SELECT 
+			<include refid="xsLinewastageColumns"/>
+		FROM xs_linewastage a
+		<include refid="xsLinewastageJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO xs_linewastage(
+			id,
+			line_id,
+			line_code,
+			linename,
+			qsrq,
+			jsrq,
+			sale_qua,
+			salequa_insdh,
+			act_excerpqua,
+			trwaste_exsdh,
+			trwaste_insdh,
+			sdh_trwaste,
+			com_trwaste,
+			comtrwaste_insdh,
+			sdh_comtrwaste,
+			speline_waste,
+			qua1,
+			qua2,
+			waste_qua,
+			theory_trwaste,
+			theory_wrate,
+			theory_compwrate,
+			act_wrate,
+			comp_wrate,
+			wrate_prscore,
+			wrate_score,
+			act_powerrate,
+			power_prscore,
+			power_score,
+			burgle,
+			copyerror,
+			finalscore,
+			others
+		) VALUES (
+			#{id},
+			#{lineId},
+			#{lineCode},
+			#{linename},
+			#{qsrq},
+			#{jsrq},
+			#{saleQua},
+			#{salequaInsdh},
+			#{actExcerpqua},
+			#{trwasteExsdh},
+			#{trwasteInsdh},
+			#{sdhTrwaste},
+			#{comTrwaste},
+			#{comtrwasteInsdh},
+			#{sdhComtrwaste},
+			#{spelineWaste},
+			#{qua1},
+			#{qua2},
+			#{wasteQua},
+			#{theoryTrwaste},
+			#{theoryWrate},
+			#{theoryCompwrate},
+			#{actWrate},
+			#{compWrate},
+			#{wratePrscore},
+			#{wrateScore},
+			#{actPowerrate},
+			#{powerPrscore},
+			#{powerScore},
+			#{burgle},
+			#{copyerror},
+			#{finalscore},
+			#{others}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE xs_linewastage SET 	
+			line_id = #{lineId},
+			line_code = #{lineCode},
+			linename = #{linename},
+			qsrq = #{qsrq},
+			jsrq = #{jsrq},
+			sale_qua = #{saleQua},
+			salequa_insdh = #{salequaInsdh},
+			act_excerpqua = #{actExcerpqua},
+			trwaste_exsdh = #{trwasteExsdh},
+			trwaste_insdh = #{trwasteInsdh},
+			sdh_trwaste = #{sdhTrwaste},
+			com_trwaste = #{comTrwaste},
+			comtrwaste_insdh = #{comtrwasteInsdh},
+			sdh_comtrwaste = #{sdhComtrwaste},
+			speline_waste = #{spelineWaste},
+			qua1 = #{qua1},
+			qua2 = #{qua2},
+			waste_qua = #{wasteQua},
+			theory_trwaste = #{theoryTrwaste},
+			theory_wrate = #{theoryWrate},
+			theory_compwrate = #{theoryCompwrate},
+			act_wrate = #{actWrate},
+			comp_wrate = #{compWrate},
+			wrate_prscore = #{wratePrscore},
+			wrate_score = #{wrateScore},
+			act_powerrate = #{actPowerrate},
+			power_prscore = #{powerPrscore},
+			power_score = #{powerScore},
+			burgle = #{burgle},
+			copyerror = #{copyerror},
+			finalscore = #{finalscore},
+			others = #{others}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM xs_linewastage
+		WHERE id = #{id}
+	</update>
+
+	<update id="deleteQsrqtoJsrq">
+		DELETE FROM xs_linewastage
+		WHERE qsrq = #{qsrq} AND jsrq = #{jsrq}
+	</update>
+
+	<insert id="insertFromLine">
+		INSERT INTO xs_linewastage(
+		id,
+		line_id,
+		line_code,
+		linename,
+		qsrq,
+		jsrq
+		)
+		SELECT
+		CONCAT(id,#{qsrq},#{jsrq}),
+		id,
+		line_code,
+		line_name,
+		#{qsrq},
+		#{jsrq} 
+		FROM xs_line WHERE changesign = "0"
+	</insert>
+
+</mapper>

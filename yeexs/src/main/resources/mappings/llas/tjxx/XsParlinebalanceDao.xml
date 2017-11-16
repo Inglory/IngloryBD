@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yee.yide.llas.tjxx.dao.XsParlinebalanceDao">
+    
+	<sql id="xsParlinebalanceColumns">
+		a.id AS "id",
+		a.ym AS "ym",
+		a.qsrq AS "qsrq",
+		a.jsrq AS "jsrq",
+		a.line_id AS "lineId",
+		a.line_code AS "lineCode",
+		a.line_name AS "lineName",
+		a.trsubstation_id AS "trsubstationId",
+		a.power_qua AS "powerQua",
+		a.sale_qua AS "saleQua",
+		a.waste_qua AS "wasteQua",
+		a.nonbal_qua AS "nonbalQua",
+		a.nonbal_rate AS "nonbalRate",
+		a.voltage AS "voltage",
+		a.yglj AS "yglj",
+		a.wglj AS "wglj",
+		a.sslj AS "sslj",
+		a.sclj AS "sclj"
+	</sql>
+	
+	<sql id="xsParlinebalanceJoins">
+	</sql>
+    
+	<select id="get" resultType="XsParlinebalance">
+		SELECT 
+			<include refid="xsParlinebalanceColumns"/>
+		FROM xs_parlinebalance a
+		<include refid="xsParlinebalanceJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="XsParlinebalance">
+		SELECT 
+			<include refid="xsParlinebalanceColumns"/>
+		FROM xs_parlinebalance a
+		<include refid="xsParlinebalanceJoins"/>
+		<where>
+			
+			<if test="ym != null and ym != ''">
+				AND a.ym = #{ym}
+			</if>
+			<if test="qsrq != null and qsrq != ''">
+				AND a.qsrq = #{qsrq}
+			</if>
+			<if test="jsrq != null and jsrq != ''">
+				AND a.jsrq = #{jsrq}
+			</if>
+			<if test="lineId != null and lineId != ''">
+				AND a.line_id = #{lineId}
+			</if>
+			<if test="lineCode != null and lineCode != ''">
+				AND a.line_code = #{lineCode}
+			</if>
+			<if test="lineName != null and lineName != ''">
+				AND a.line_name = #{lineName}
+			</if>
+			<if test="trsubstationId != null and trsubstationId != ''">
+				AND a.trsubstation_id = #{trsubstationId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="XsParlinebalance">
+		SELECT 
+			<include refid="xsParlinebalanceColumns"/>
+		FROM xs_parlinebalance a
+		<include refid="xsParlinebalanceJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO xs_parlinebalance(
+			id,
+			ym,
+			qsrq,
+			jsrq,
+			line_id,
+			line_code,
+			line_name,
+			trsubstation_id,
+			power_qua,
+			sale_qua,
+			waste_qua,
+			nonbal_qua,
+			nonbal_rate,
+			voltage,
+			yglj,
+			wglj,
+			sslj,
+			sclj
+		) VALUES (
+			#{id},
+			#{ym},
+			#{qsrq},
+			#{jsrq},
+			#{lineId},
+			#{lineCode},
+			#{lineName},
+			#{trsubstationId},
+			#{powerQua},
+			#{saleQua},
+			#{wasteQua},
+			#{nonbalQua},
+			#{nonbalRate},
+			#{voltage},
+			#{yglj},
+			#{wglj},
+			#{sslj},
+			#{sclj}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE xs_parlinebalance SET 	
+			ym = #{ym},
+			qsrq = #{qsrq},
+			jsrq = #{jsrq},
+			line_id = #{lineId},
+			line_code = #{lineCode},
+			line_name = #{lineName},
+			trsubstation_id = #{trsubstationId},
+			power_qua = #{powerQua},
+			sale_qua = #{saleQua},
+			waste_qua = #{wasteQua},
+			nonbal_qua = #{nonbalQua},
+			nonbal_rate = #{nonbalRate},
+			voltage = #{voltage},
+			yglj = #{yglj},
+			wglj = #{wglj},
+			sslj = #{sslj},
+			sclj = #{sclj}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM xs_parlinebalance
+		WHERE id = #{id}
+	</update>
+	<update id="deleteQsrqToJsrq">
+		DELETE FROM xs_parlinebalance
+		WHERE qsrq = #{qsrq} AND jsrq = #{jsrq}
+	</update>
+</mapper>

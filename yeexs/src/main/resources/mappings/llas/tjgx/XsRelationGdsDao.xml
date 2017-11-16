@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yee.yide.llas.tjgx.dao.XsRelationGdsDao">
+    
+	<sql id="xsRelationGdsColumns">
+		a.id AS "id",
+		a.businessid AS "businessid",
+		l1.mc AS "gdsMc",
+		a.line_id AS "lineId",
+		l2.line_name AS "lineName",
+		a.is_directsupply AS "isDirectsupply"
+	</sql>
+	
+	<sql id="xsRelationGdsJoins">
+		LEFT JOIN xs_gds l1 ON l1.id = a.businessid
+		LEFT JOIN xs_line l2 ON l2.id = a.line_id
+	</sql>
+    
+	<select id="get" resultType="XsRelationGds">
+		SELECT 
+			<include refid="xsRelationGdsColumns"/>
+		FROM xs_relation_gds a
+		<include refid="xsRelationGdsJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="XsRelationGds">
+		SELECT 
+			<include refid="xsRelationGdsColumns"/>
+		FROM xs_relation_gds a
+		<include refid="xsRelationGdsJoins"/>
+		<where>
+			
+			<if test="businessid != null and businessid != ''">
+				AND a.businessid = #{businessid}
+			</if>
+			<if test="lineId != null and lineId != ''">
+				AND a.line_id = #{lineId}
+			</if>
+			<if test="isDirectsupply != null and isDirectsupply != ''">
+				AND a.is_directsupply = #{isDirectsupply}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="XsRelationGds">
+		SELECT 
+			<include refid="xsRelationGdsColumns"/>
+		FROM xs_relation_gds a
+		<include refid="xsRelationGdsJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO xs_relation_gds(
+			id,
+			businessid,
+			line_id,
+			is_directsupply
+		) VALUES (
+			#{id},
+			#{businessid},
+			#{lineId},
+			#{isDirectsupply}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE xs_relation_gds SET 	
+			businessid = #{businessid},
+			line_id = #{lineId},
+			is_directsupply = #{isDirectsupply}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM xs_relation_gds
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
