@@ -48,7 +48,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "${adminPath}/dljs/xsLine")
-public class CabiaoController extends BaseController {
+public class ChaobiaoController extends BaseController {
 
 	@Autowired
 	private XsLineService xsLineService;
